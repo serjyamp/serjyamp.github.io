@@ -1,0 +1,58 @@
+<div class="common-container-wr">
+	<div class="container">
+		<div class="panel">
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-sm-12 col-xs-12">
+						<div class="form-group">
+							<input class="form-control" type="text" ng-model="vm.newPhrase" placeholder="Phrase" required="required" ng-change="vm.phraseNotSavedErrorMsg = false; vm.phraseEmptyErrorMsg = false;" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12 col-xs-12">
+						<div class="form-group">
+							<textarea class="form-control" type="text" ng-model="vm.newPhraseDescription" placeholder="Description" ng-change="vm.phraseNotSavedErrorMsg = false; vm.phraseEmptyErrorMsg = false;"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel-footer">
+				<div class="row">
+					<div class="col-sm-12 col-xs-12 text-right">
+						<span class="text-danger operation-msg" ng-show="vm.phraseNotSavedErrorMsg">Phrase hasn't been saved. Check it and try again.</span>
+						<span class="text-danger operation-msg" ng-show="vm.phraseEmptyErrorMsg">Please type your phrase.</span>
+						<button class="btn btn-raised btn-success" type="button" ng-click="vm.addNewPhrase()">Add</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="phrases" ng-show="vm.phrasesList.length">
+			<div class="panel" ng-repeat="phrase in vm.phrasesList | orderBy:reverse:true">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-sm-12 col-xs-12">
+							<div class="form-group">
+								<input class="form-control" type="text" ng-model="phrase.phrase" placeholder="Phrase" ng-change="vm.saveCurrentPhrase(phrase)" />
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 col-xs-12">
+							<div class="form-group">
+								<textarea class="form-control" type="text" ng-model="phrase.description" placeholder="Description" ng-change="vm.saveCurrentPhrase(phrase)"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="panel-footer">
+					<div class="row text-right">
+						<div class="col-sm-12 col-xs-12">
+							<button class="btn btn-raised" type="button" ng-click="vm.phrasesList.$remove(phrase)">Delete</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,41 @@
+<div class="navbar navbar-inverse navbar-fixed-top" ng-controller="NavbarCtrl as vm">
+	<div class="container">
+		<div class="navbar-header">
+			<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" ui-sref="/" ui-sref-opts="{reload:true}">Parlaria</a>
+		</div>
+		<div class="navbar-collapse collapse navbar-inverse-collapse">
+			<ul class="nav navbar-nav" ng-if="$root.firebaseUser">
+				<li ui-sref-active="active">
+					<a ui-sref="words" ui-sref-opts="{reload:true}" href="">words</a>
+				</li>
+				<li ui-sref-active="active">
+					<a ui-sref="phrases" ui-sref-opts="{reload:true}" href="">phrases</a>
+				</li>
+				<li ui-sref-active="active">
+					<a ui-sref="essay" ui-sref-opts="{reload:true}" href="">essay</a>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right" ng-if="!$root.firebaseUser">
+				<li>
+					<a href="javascript:void(0)" ng-click="vm.signIn()">
+						<i class="fa fa-sign-in"></i> Login</a>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right" ng-if="$root.firebaseUser">
+				<li ui-sref-active="active">
+					<a ui-sref="statistics" ui-sref-opts="{reload:true}" href="">
+						<i class="fa fa-bar-chart"></i> statistics</a>
+				</li>
+				<li>
+					<a href="javascript:void(0)" ng-click="vm.signOut()">
+						<i class="fa fa-sign-out"></i> Sign out</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

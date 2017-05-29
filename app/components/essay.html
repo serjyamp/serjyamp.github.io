@@ -1,0 +1,111 @@
+<div class="common-container-wr">
+	<div class="container">
+		<div class="row new-essay-control" ng-show="vm.essaysList.length">
+			<div class="col-sm-12 col-xs-12 no-pad-l">
+				<button class="btn btn-raised btn-success" ng-click="vm.showNewEssayForm = !vm.showNewEssayForm">New essay</button>
+			</div>
+		</div>
+		<div class="new-essay" ng-show="vm.showNewEssayForm">
+			<div class="panel">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-sm-12 col-xs-12">
+							<div class="form-group">
+								<input class="form-control" type="text" placeholder="Name of essay" ng-model="vm.essayName" ng-change="vm.essayNotSavedErrorMsg = false; vm.essayEmptyErrorMsg = false;" required="required" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-sm-12 col-xs-12">
+							<wysiwyg textarea-id="question" textarea-class="form-control" textarea-height="250px" textarea-name="textareaQuestion" textarea-required="required" ng-model="vm.essayText" enable-bootstrap-title="true" ng-change="vm.essayNotSavedErrorMsg = false; vm.essayEmptyErrorMsg = false;"></wysiwyg>
+						</div>
+					</div>
+				</div>
+				<div class="panel-footer">
+					<div class="row essay-info-row flex-vam">
+						<div class="col-sm-6 col-xs-6">
+							<small class="essay-info">
+								<span>Words:
+									<strong class="essay-info-value">{{vm.numberOfWords(vm.essayText)}}</strong>
+								</span>
+								<span>Characters:
+									<strong class="essay-info-value">{{vm.numberOfCharacters(vm.essayText)}}</strong>
+								</span>
+							</small>
+						</div>
+						<div class="col-sm-6 col-xs-6 text-right">
+							<span class="text-danger operation-msg" ng-show="vm.essayNotSavedErrorMsg">Essay hasn't been saved. Check it and try again.</span>
+							<span class="text-danger operation-msg" ng-show="vm.essayEmptyErrorMsg">Fields can't be empty.</span>
+							<button class="btn btn-raised btn-default" type="button" ng-click="vm.cancelNewEssay()" ng-show="vm.essaysList.length">Clear & Close</button>
+							<button class="btn btn-raised btn-success" type="button" ng-click="vm.addNewEssay()">Save</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="essays" ng-show="vm.essaysList.length">
+			<div class="essays-list">
+				<div class="essays-list__item" ng-repeat="essay in vm.essaysList | orderBy:reverse:true" ng-init="showEssay = false">
+					<div class="panel">
+						<div class="panel-body">
+							<div class="row flex-vam">
+								<div class="col-sm-10 col-xs-10">
+									<div class="form-group">
+										<input class="form-control" type="text" ng-model="essay.essayName" ng-readonly="!showEssay" ng-change="vm.essayCurrentNotSavedErrorMsg = false; vm.essayCurrentEmptyErrorMsg = false;" required="required" />
+									</div>
+								</div>
+								<div class="col-sm-2 col-xs-2 text-right">
+									<button class="btn btn-raised" ng-click="showEssay = !showEssay">
+										<span ng-show="!showEssay">Show</span>
+										<span ng-show="showEssay">Hide</span>
+									</button>
+								</div>
+							</div>
+							<div class="row real-essay-editor" ng-show="showEssay">
+								<div class="col-sm-12 col-xs-12">
+									<wysiwyg textarea-id="realEssayEditor" textarea-class="form-control" textarea-height="250px" textarea-name="textareaQuestion" textarea-required="required" ng-model="essay.essayText" ng-change="vm.essayCurrentNotSavedErrorMsg = false; vm.essayCurrentEmptyErrorMsg = false;"
+									 enable-bootstrap-title="true"></wysiwyg>
+								</div>
+								<div class="row">
+									<div class="col-sm-6 col-xs-6">
+										<button class="btn btn-raised" ng-click="vm.deleteEssay(essay)">Delete</button>
+									</div>
+									<div class="col-sm-6 col-xs-6 text-right">
+										<span class="text-danger operation-msg" ng-show="vm.essayCurrentNotSavedErrorMsg">Essay hasn't been saved. Check it and try again.</span>
+										<span class="text-danger operation-msg" ng-show="vm.essayCurrentEmptyErrorMsg">Fields can't be empty.</span>
+										<button class="btn btn-raised btn-success" type="button" ng-click="vm.saveCurrentEssay(essay)">Save</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer">
+							<div class="row essay-info-row">
+								<div class="col-sm-6 col-xs-6">
+									<small class="essay-info">
+										<span>Created:
+											<strong class="essay-info-value">{{essay.created}}</strong>
+										</span>
+									</small>
+								</div>
+								<div class="col-sm-6 col-xs-6 text-right">
+									<small class="essay-info">
+										<span>Words:
+											<strong class="essay-info-value">{{vm.numberOfWords(essay.essayText)}}</strong>
+										</span>
+										<span>Characters:
+											<strong class="essay-info-value">{{vm.numberOfCharacters(essay.essayText)}}</strong>
+										</span>
+									</small>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

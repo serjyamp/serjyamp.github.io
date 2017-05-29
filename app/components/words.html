@@ -1,0 +1,54 @@
+<div class="common-container-wr">
+	<div class="container">
+		<div class="panel">
+			<form ng-submit="vm.addNewWord()">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-sm-6 col-xs-6">
+							<div class="form-group">
+								<input class="form-control" type="text" ng-model="vm.newWord" placeholder="Word" name="word" required="required" />
+							</div>
+						</div>
+						<div class="col-sm-6 col-xs-6">
+							<div class="form-group">
+								<input class="form-control" type="text" ng-model="vm.newWordTranslation" placeholder="Translation" name="translation" required="required" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="panel-footer">
+					<div class="row">
+						<div class="col-sm-12 col-xs-12 text-right">
+							<button class="btn btn-raised btn-success" type="submit">Add</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="panel" ng-show="vm.wordsList.length">
+			<div class="panel-body">
+				<div class="list-group">
+					<div class="list-group-item" ng-repeat="word in vm.wordsList | orderBy:reverse:true">
+						<div class="row">
+							<div class="col-sm-5 col-xs-5">
+								<div class="form-group">
+									<input class="form-control" type="text" ng-model="word.word" ng-change="vm.wordsList.$save(word)" />
+								</div>
+							</div>
+							<div class="col-sm-6 col-xs-6">
+								<div class="form-group">
+									<input class="form-control" type="text" ng-model="word.translation" ng-change="vm.wordsList.$save(word)" />
+								</div>
+							</div>
+							<div class="col-sm-1 col-xs-1 text-right">
+								<button class="btn btn-default btn-fab btn-fab-mini" ng-click="vm.wordsList.$remove(word)">
+									<i class="fa fa-times" aria-hidden="true"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
