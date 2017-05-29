@@ -38,9 +38,9 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
             controller: 'WordsCtrl',
             controllerAs: 'vm'
         })
-        .state('essay', {
-            url: '/essay',
-            templateUrl: 'app/components/essay.html',
+        .state('essays', {
+            url: '/essays',
+            templateUrl: 'app/components/essays.html',
             controller: 'EssayCtrl',
             controllerAs: 'vm'
         })
