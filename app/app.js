@@ -1,11 +1,11 @@
 
-NavbarCtrl.$inject = ["$rootScope", "$state", "AuthFactory", "$location", "$window"];
-AuthFactory.$inject = ["$firebaseAuth"];
-fire.$inject = ["$log", "$firebaseObject", "$firebaseArray", "$rootScope", "AuthFactory"];
 EssayCtrl.$inject = ["fire", "$rootScope", "AuthFactory"];
 PhrasesCtrl.$inject = ["fire", "$rootScope", "AuthFactory"];
 StatisticsCtrl.$inject = ["fire", "$rootScope", "AuthFactory", "$scope"];
-WordsCtrl.$inject = ["fire", "$rootScope", "AuthFactory"];$.material.init();
+WordsCtrl.$inject = ["fire", "$rootScope", "AuthFactory"];
+NavbarCtrl.$inject = ["$rootScope", "$state", "AuthFactory", "$location", "$window"];
+AuthFactory.$inject = ["$firebaseAuth"];
+fire.$inject = ["$log", "$firebaseObject", "$firebaseArray", "$rootScope", "AuthFactory"];$.material.init();
 
 angular
     .module('further', [
@@ -56,144 +56,6 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
             controller: 'StatisticsCtrl',
             controllerAs: 'vm'
         });
-}
-
-angular.module('further.Navbar', [])
-    .controller('NavbarCtrl', NavbarCtrl);
-
-function NavbarCtrl($rootScope, $state, AuthFactory, $location, $window) {
-    var vm = this;
-    vm.auth = AuthFactory;
-
-    vm.getTabName = function(){
-        return $location.hash().replace(/(^#\/|\/$)/g, '');
-    }
-
-    vm.auth.authVar.$onAuthStateChanged(function(firebaseUser) {
-        $rootScope.firebaseUser = firebaseUser;
-        if ($rootScope.firebaseUser) {
-            $state.go('words');
-        }
-    });
-
-    vm.signOut = function() {
-        vm.auth.signOut();
-        $state.go('/');
-        $window.location.reload();
-    };
-    vm.signIn = function() {
-        vm.auth.signIn();
-    };
-
-    vm.photoURL = null;
-}
-
-angular
-    .module("further.auth.factory", ["firebase"])
-    .factory("AuthFactory", AuthFactory);
-
-function AuthFactory($firebaseAuth) {
-    var auth = $firebaseAuth();
-
-    var service = {
-    	authVar: auth,
-        signIn: signIn,
-        signOut: signOut
-    };
-
-    function signIn() {
-        return auth.$signInWithPopup('google');
-    }
-
-    function signOut() {
-        return auth.$signOut();
-    }
-
-    return service;
-}
-
-// Initialize Firebase
-var config = {
-    apiKey: "AIzaSyCEzgvtuQYnoz3JbmlIkJoSRPiDuXJrTwQ",
-    authDomain: "parlaria-9a874.firebaseapp.com",
-    databaseURL: "https://parlaria-9a874.firebaseio.com",
-    projectId: "parlaria-9a874",
-    storageBucket: "parlaria-9a874.appspot.com",
-    messagingSenderId: "630755092176"
-};
-firebase.initializeApp(config);
-
-angular
-    .module('further.fire.service', ['firebase'])
-    .service('fire', fire);
-
-function fire($log, $firebaseObject, $firebaseArray, $rootScope, AuthFactory) {
-    var vm = this;
-    vm.auth = AuthFactory;
-
-    var ref = firebase.database().ref();
-    var uid = vm.auth.authVar.$getAuth().uid;
-
-    // WORDS
-    var wordsRef = ref.child(uid + '/words');
-    var allWords = $firebaseArray(wordsRef);
-
-    vm.getAllWords = function(cb) {
-        return allWords.$loaded(cb);
-    };
-    vm.addNewWord = function(word, translation, created) {
-        var duplicate = false;
-        angular.forEach(allWords, function(value, key) {
-            if (value.word == word) {
-                duplicate = true;
-                return;
-            }
-        });
-
-        if (!duplicate) {
-            var obj = {
-                word: word,
-                translation: translation,
-                created: created
-            };
-
-            return allWords.$add(obj);
-        }
-
-        return false;
-    };
-
-    // ESSAY
-    var essayRef = ref.child(uid + '/essay');
-    var allEssays = $firebaseArray(essayRef);
-    vm.addNewEssay = function(essayName, essayText, created) {
-        var obj = {
-            essayName: essayName,
-            essayText: essayText,
-            created: created
-        };
-
-        return allEssays.$add(obj);
-    };
-    vm.getAllEssays = function(cb) {
-        return allEssays.$loaded(cb);
-    };
-
-    // PHRASES
-    var phrasesRef = ref.child(uid + '/phrases');
-    var allPhrases = $firebaseArray(phrasesRef);
-    vm.addNewPhrase = function(phrase, description, created) {
-        var obj = {
-            phrase: phrase,
-            description: description,
-            created: created
-        };
-
-        return allPhrases.$add(obj);
-    };
-    vm.getAllPhrases = function(cb) {
-        return allPhrases.$loaded(cb);
-    };
 }
 
 angular.module('further.Essay', [])
@@ -599,4 +461,142 @@ function WordsCtrl(fire, $rootScope, AuthFactory) {
     fire.getAllWords().then(function(_d) {
         vm.wordsList = _d;
     });
+}
+
+angular.module('further.Navbar', [])
+    .controller('NavbarCtrl', NavbarCtrl);
+
+function NavbarCtrl($rootScope, $state, AuthFactory, $location, $window) {
+    var vm = this;
+    vm.auth = AuthFactory;
+
+    vm.getTabName = function(){
+        return $location.hash().replace(/(^#\/|\/$)/g, '');
+    }
+
+    vm.auth.authVar.$onAuthStateChanged(function(firebaseUser) {
+        $rootScope.firebaseUser = firebaseUser;
+        if ($rootScope.firebaseUser) {
+            $state.go('words');
+        }
+    });
+
+    vm.signOut = function() {
+        vm.auth.signOut();
+        $state.go('/');
+        $window.location.reload();
+    };
+    vm.signIn = function() {
+        vm.auth.signIn();
+    };
+
+    vm.photoURL = null;
+}
+
+angular
+    .module("further.auth.factory", ["firebase"])
+    .factory("AuthFactory", AuthFactory);
+
+function AuthFactory($firebaseAuth) {
+    var auth = $firebaseAuth();
+
+    var service = {
+    	authVar: auth,
+        signIn: signIn,
+        signOut: signOut
+    };
+
+    function signIn() {
+        return auth.$signInWithPopup('google');
+    }
+
+    function signOut() {
+        return auth.$signOut();
+    }
+
+    return service;
+}
+
+// Initialize Firebase
+var config = {
+    apiKey: "AIzaSyCEzgvtuQYnoz3JbmlIkJoSRPiDuXJrTwQ",
+    authDomain: "parlaria-9a874.firebaseapp.com",
+    databaseURL: "https://parlaria-9a874.firebaseio.com",
+    projectId: "parlaria-9a874",
+    storageBucket: "parlaria-9a874.appspot.com",
+    messagingSenderId: "630755092176"
+};
+firebase.initializeApp(config);
+
+angular
+    .module('further.fire.service', ['firebase'])
+    .service('fire', fire);
+
+function fire($log, $firebaseObject, $firebaseArray, $rootScope, AuthFactory) {
+    var vm = this;
+    vm.auth = AuthFactory;
+
+    var ref = firebase.database().ref();
+    var uid = vm.auth.authVar.$getAuth().uid;
+
+    // WORDS
+    var wordsRef = ref.child(uid + '/words');
+    var allWords = $firebaseArray(wordsRef);
+
+    vm.getAllWords = function(cb) {
+        return allWords.$loaded(cb);
+    };
+    vm.addNewWord = function(word, translation, created) {
+        var duplicate = false;
+        angular.forEach(allWords, function(value, key) {
+            if (value.word == word) {
+                duplicate = true;
+                return;
+            }
+        });
+
+        if (!duplicate) {
+            var obj = {
+                word: word,
+                translation: translation,
+                created: created
+            };
+
+            return allWords.$add(obj);
+        }
+
+        return false;
+    };
+
+    // ESSAY
+    var essayRef = ref.child(uid + '/essay');
+    var allEssays = $firebaseArray(essayRef);
+    vm.addNewEssay = function(essayName, essayText, created) {
+        var obj = {
+            essayName: essayName,
+            essayText: essayText,
+            created: created
+        };
+
+        return allEssays.$add(obj);
+    };
+    vm.getAllEssays = function(cb) {
+        return allEssays.$loaded(cb);
+    };
+
+    // PHRASES
+    var phrasesRef = ref.child(uid + '/phrases');
+    var allPhrases = $firebaseArray(phrasesRef);
+    vm.addNewPhrase = function(phrase, description, created) {
+        var obj = {
+            phrase: phrase,
+            description: description,
+            created: created
+        };
+
+        return allPhrases.$add(obj);
+    };
+    vm.getAllPhrases = function(cb) {
+        return allPhrases.$loaded(cb);
+    };
 }
