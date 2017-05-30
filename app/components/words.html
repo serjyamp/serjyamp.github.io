@@ -6,7 +6,7 @@
 					<div class="row">
 						<div class="col-sm-6 col-xs-6">
 							<div class="form-group">
-								<input class="form-control" type="text" ng-model="vm.newWord" placeholder="Word" name="word" required="required" />
+								<input class="form-control" type="text" ng-model="vm.newWord" placeholder="English word" name="word" required="required" />
 							</div>
 						</div>
 						<div class="col-sm-6 col-xs-6">
@@ -32,12 +32,12 @@
 						<div class="row">
 							<div class="col-sm-5 col-xs-5">
 								<div class="form-group">
-									<input class="form-control" type="text" ng-model="word.word" ng-change="vm.wordsList.$save(word)" />
+									<input class="form-control" type="text" ng-model="word.word" ng-change="vm.wordsList.$save(word)" placeholder="English word" />
 								</div>
 							</div>
 							<div class="col-sm-6 col-xs-6">
 								<div class="form-group">
-									<input class="form-control" type="text" ng-model="word.translation" ng-change="vm.wordsList.$save(word)" />
+									<input class="form-control" type="text" ng-model="word.translation" ng-change="vm.wordsList.$save(word)" placeholder="Translation" />
 								</div>
 							</div>
 							<div class="col-sm-1 col-xs-1 text-right">
