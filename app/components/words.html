@@ -1,7 +1,7 @@
 <div class="common-container-wr">
 	<div class="container">
 		<div class="panel">
-			<form ng-submit="vm.addNewWord()">
+			<form ng-submit="vm.addNewWord(vm.newWord, vm.newWordTranslation)">
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-sm-6 col-xs-6">
@@ -25,7 +25,30 @@
 				</div>
 			</form>
 		</div>
+		<div class="panel" ng-show="vm.recommendations.length">
+			<div class="panel-heading">Recommendations</div>
+			<div class="panel-body">
+				<div class="row" ng-repeat="r in vm.recommendations">
+					<div class="col-sm-5 col-xs-5">
+						<div class="form-group">
+							<input class="form-control" type="text" ng-model="r.word" placeholder="Foreign word" readonly="readonly" />
+						</div>
+					</div>
+					<div class="col-sm-6 col-xs-6">
+						<div class="form-group">
+							<input class="form-control" type="text" ng-model="r.translation" placeholder="Translation" readonly="readonly" />
+						</div>
+					</div>
+					<div class="col-sm-1 col-xs-1 text-right">
+						<button class="btn btn-success btn-fab btn-fab-mini" ng-click="vm.addNewWord(r.word, r.translation, 1)">
+							<i class="fa fa-plus" aria-hidden="true"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="panel" ng-show="vm.wordsList.length">
+			<div class="panel-heading panel-heading--styled">Dictionary</div>
 			<div class="panel-body">
 				<div class="list-group">
 					<div class="list-group-item" ng-repeat="word in vm.wordsList | orderBy:reverse:true">
@@ -41,7 +64,7 @@
 								</div>
 							</div>
 							<div class="col-sm-1 col-xs-1 text-right">
-								<button class="btn btn-default btn-fab btn-fab-mini" ng-click="vm.wordsList.$remove(word)">
+								<button class="btn btn-default btn-fab btn-fab-mini" ng-click="vm.removeWord(word)">
 									<i class="fa fa-times" aria-hidden="true"></i>
 								</button>
 							</div>
